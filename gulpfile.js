@@ -9,6 +9,8 @@ var buffer = require('vinyl-buffer');
 var webserver = require('gulp-webserver');
 var sass = require('gulp-sass');
 var usemin = require('gulp-usemin');
+var cssmin = require('gulp-cssmin');
+var shell = require('gulp-shell');
 
 gulp.task('browserify', function(){
   var b = browserify();
@@ -22,7 +24,7 @@ gulp.task('browserify', function(){
     .pipe(gulp.dest('./dist/src/js'));
 });
 
-gulp.task('release', function () {
+gulp.task('browserify-release', function () {
   var b = browserify();
   b.transform(reactify); // use the reactify transform
   b.transform(babel);
@@ -51,6 +53,12 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('./dist/src/css'));
 });
 
+gulp.task('minifycss', function () {
+  gulp.src('./dist/src/css/*.css')
+    .pipe(cssmin())
+    .pipe(gulp.dest('./dist/src/css/'));
+});
+
 gulp.task('copy', function() {
   gulp.src('src/index.html')
     .pipe(plumber())
@@ -71,4 +79,15 @@ gulp.task('watch', function() {
   gulp.watch('src/index.html', ['copy']);
 });
 
+gulp.task('cordova-run-android', function () {
+  return gulp.src('./')
+  .pipe(shell('cordova run android', {cwd: './cordova'}));
+});
+
 gulp.task('default', ['browserify', 'styles', 'copy', 'webserver', 'watch']);
+
+gulp.task('server:dist', ['browserify-release', 'styles', 'copy', 'webserver', 'watch']);
+
+gulp.task('build', ['browserify-release', 'styles', 'copy', 'minifycss']);
+
+gulp.task('run-android', ['build', 'cordova-run-android']);

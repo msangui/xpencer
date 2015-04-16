@@ -1,0 +1,56 @@
+.notification {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 11;
+  content: '';
+  background-color: rgba(0, 0, 0, .3);
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  @include transition(all .3s ease-in-out);
+  @include vendor-prefix(transform, translate3d(0, -100%, 0));
+  .popover {
+    @include vendor-prefix(transform, translate3d(0, -100%, 0));
+    @include transition(transform .3s ease-in-out);
+    position: absolute;
+    top: 72px;
+    opacity: 1;
+    display: block;
+    &:before {
+      border: none;
+    }
+    p {
+      text-align: center;
+      padding: 5px 0;
+    }
+    .notification-options {
+      white-space: nowrap;
+      &.one-option {
+        .btn-block {
+          display: inline-block;
+          width: 100%;
+          margin: 0;
+        }
+      }
+      .btn-block {
+        display: inline-block;
+        width: 49%;
+        padding: 7px;
+        &:first-child {
+          margin-right: 2%;
+        }
+      }
+    }
+  }
+  &.shown {
+    opacity: 1;
+    @include vendor-prefix(transform, translate3d(0, 0, 0));
+
+    .popover {
+      @include vendor-prefix(transform, translate3d(0, 0, 0));
+    }
+  }
+}

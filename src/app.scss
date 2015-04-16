@@ -2,7 +2,8 @@
 
 // common
 @import 'components/common/styles/formInput',
-        'components/common/styles/common';
+        'components/common/styles/common',
+        'components/common/styles/mixins';
 
 
 // expense
@@ -11,7 +12,12 @@
         'components/expense/styles/expenseList',
         'components/expense/styles/expenseListItem';
 
-// layout
+// notification
+@import 'components/notification/styles/notification';
 
+// loading
+@import 'components/loading/styles/loading';
+
+// layout
 @import 'components/layout/styles/routeTransitions',
         'components/layout/styles/header';

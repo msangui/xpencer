@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "ratchet": "~2.0.2"
+    "ratchet": "~2.0.2",
+    "pouchdb": "~3.4.0"
   }
 }

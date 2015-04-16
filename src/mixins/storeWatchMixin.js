@@ -1,16 +1,16 @@
-var StoreWatchMixin = function(cb, store){
+var StoreWatchMixin = function(store, setComponentState){
   return {
-    getInitialState:function(){
-      return cb(this);
+    getInitialState(){
+      return setComponentState(this);
     },
-    componentWillMount:function(){
+    componentWillMount(){
       store.addChangeListener(this._onChange)
     },
-    componentWillUnmount:function(){
+    componentWillUnmount(){
       store.removeChangeListener(this._onChange)
     },
-    _onChange:function(){
-      this.setState(cb(this))
+    _onChange(){
+      this.setState(setComponentState(this));
     }
   }
 };

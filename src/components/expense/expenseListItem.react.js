@@ -1,6 +1,6 @@
 var React = require('react');
 var Hammer = require('react-hammerjs');
-
+var TransitionManager = require('../../utils/transitionManager');
 
 var ExpenseListItem = React.createClass({
   contextTypes: {
@@ -9,8 +9,12 @@ var ExpenseListItem = React.createClass({
   },
 
   viewExpense() {
-    this.context.router.direction = 'forward';
-    this.context.router.transitionTo('viewExpense', {expenseId: this.props.expenseItem.id});
+    TransitionManager.go(this.context.router, {
+      route: 'viewExpense',
+      params: {
+        expenseId: this.props.expenseItem.id
+      }
+    });
   },
 
   render() {

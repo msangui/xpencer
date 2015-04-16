@@ -1,32 +1,12 @@
 var AppConstants = require('../constants/appConstants');
 var Q = require('q');
-
-var db;
-var ready = Q.defer();
-var request = window.indexedDB.open(AppConstants.DATABASE.NAME);
-
-request.onerror = function() {
-  ready.reject();
-};
-
-request.onsuccess = function() {
-  db = request.result;
-  ready.resolve();
-};
-
-request.onupgradeneeded = function (event) {
-  var db = event.target.result;
-  var os = db.createObjectStore('expenses', {keyPath: 'id'});
-  // create indexes
-  os.createIndex("createdAt", "createdAt", {unique:false});
-  os.createIndex("updatedAt", "updatedAt", {unique:false});
-};
+var db = require('./db');
 
 var ExpenseAPI = {
   addExpense(expenseData) {
     var deferred = Q.defer();
 
-    ready.promise.then(function () {
+    db.ready().then(function (db) {
       expenseData.id = Date.now();
       expenseData.createdAt = Date.now();
       expenseData.updatedAt = Date.now();
@@ -40,7 +20,10 @@ var ExpenseAPI = {
       };
 
       request.onsuccess = function() {
-        deferred.resolve();
+
+        setTimeout(function () {
+          deferred.resolve(expenseData);
+        }, 1500);
       };
     });
 
@@ -50,7 +33,7 @@ var ExpenseAPI = {
   updateExpense(expenseData) {
     var deferred = Q.defer();
 
-    ready.promise.then(function () {
+    db.ready().then(function (db) {
 
       expenseData.updatedAt = Date.now();
 
@@ -63,7 +46,9 @@ var ExpenseAPI = {
       };
 
       request.onsuccess = function () {
-        deferred.resolve();
+        setTimeout(function (){
+          deferred.resolve(expenseData);
+        }, 1500);
       };
 
     });
@@ -73,8 +58,8 @@ var ExpenseAPI = {
 
   removeExpense(expenseId) {
     var deferred = Q.defer();
-    ready.promise.then(function () {
-
+    db.ready().then(function (db) {
+      expenseId = parseInt(expenseId, 10);
       var request = db.transaction(['expenses'], 'readwrite')
         .objectStore('expenses')
         .delete(expenseId);
@@ -84,7 +69,9 @@ var ExpenseAPI = {
       };
 
       request.onsuccess = function () {
-        deferred.resolve();
+        setTimeout(function (){
+          deferred.resolve();
+        }, 1500);
       };
     });
 
@@ -93,8 +80,8 @@ var ExpenseAPI = {
 
   getExpense(expenseId) {
     var deferred = Q.defer();
-    ready.promise.then(function () {
-
+    db.ready().then(function (db) {
+      expenseId = parseInt(expenseId, 10);
       var request = db.transaction(['expenses'])
         .objectStore('expenses')
         .get(expenseId);
@@ -104,7 +91,9 @@ var ExpenseAPI = {
       };
 
       request.onsuccess = function () {
-        deferred.resolve(request.result);
+        setTimeout(function (){
+          deferred.resolve(request.result);
+        }, 1500);
       };
     });
 
@@ -113,7 +102,7 @@ var ExpenseAPI = {
 
   getAllExpenses() {
     var deferred = Q.defer();
-    ready.promise.then(function () {
+    db.ready().then(function (db) {
 
       var request = db.transaction(['expenses'])
         .objectStore('expenses')
@@ -131,7 +120,9 @@ var ExpenseAPI = {
           expenses.push(cursor.value);
           cursor.continue();
         } else {
-          deferred.resolve(expenses);
+          setTimeout(function (){
+            deferred.resolve(expenses);
+          }, 1500);
         }
       };
     });

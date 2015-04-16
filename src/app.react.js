@@ -6,7 +6,8 @@ var ReactTransitionGroup = React.addons.CSSTransitionGroup;
 var ExpenseList = require('./components/expense/expenseList.react');
 var ExpenseForm = require('./components/expense/expenseForm.react');
 var ExpenseItem = require('./components/expense/expenseItem.react');
-
+var Notification = require('./components/notification/notification.react');
+var Loading = require('./components/loading/loading.react');
 
 var App = React.createClass({
   contextTypes: {
@@ -15,10 +16,16 @@ var App = React.createClass({
 
   render() {
     var name = this.context.router.getCurrentPath();
+    if (!this.context.router.direction) {
+      this.context.router.direction = 'forward';
+    }
     return (
-      <ReactTransitionGroup transitionName={this.context.router.direction} component="div">
-        <RouteHandler key={name}/>
-      </ReactTransitionGroup>
+      <div>
+        <Notification />
+        <ReactTransitionGroup transitionName={this.context.router.direction} component="div">
+          <RouteHandler key={name}/>
+        </ReactTransitionGroup>
+      </div>
     );
   }
 

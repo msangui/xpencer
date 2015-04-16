@@ -26,7 +26,7 @@ var Header = React.createClass({
     }
 
     return (
-      <header className="bar bar-nav">
+      <header className="main-header bar bar-nav">
         {left}
         {right}
         <h1 className="title">
