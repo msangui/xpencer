@@ -1,0 +1,14 @@
+.expense-form {
+  background-color: white;
+  .form-container {
+    background: white;
+    padding: 10px;
+    position: relative;
+    input, select {
+      height: 50px;
+    }
+  }
+  .form-input-with-suggestions {
+    padding-bottom: 150px;
+  }
+}

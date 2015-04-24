@@ -1,15 +1,64 @@
-header.main-header {
-  &.bar {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .icon {
-    padding: 10px;
-    &.pull-left {
-      padding-right: 40px;
+header.nav-bar {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header-height;
+  line-height: $header-height;
+  background-color: $header-background-color;
+  @include vendor-prefix(box-shadow, 0 3px 4px rgba(0,0,0,.2));
+
+  .title {
+    h1 {
+      font-weight: 400;
+      font-size: 2.5rem;
     }
-    &.pull-right {
-      padding-left: 40px;
+  }
+
+  .action {
+    &:first-child {
+      text-align: left;
+      .icon {
+        padding-left: 1rem;
+      }
+    }
+
+    &:last-child {
+      text-align: right;
+      .icon {
+        padding-right: 1rem;
+      }
+    }
+
+    &:active {
+      .icon:before {
+        @include pressed();
+      }
+    }
+
+    &:disabled {
+      color: $secondary-color;
+    }
+  }
+
+  .icon {
+    font-weight: 500;
+    font-size: $icon-action-font-size;
+    line-height: $header-height;
+    color: $primary-color;
+    &.inactive {
+      color: $secondary-color;
+    }
+    &:before {
+      padding: .5rem;
+    }
+
+
+    &[class*="icon-nav"] {
+      font-size: $icon-action-font-size + 1rem;
     }
   }
 }

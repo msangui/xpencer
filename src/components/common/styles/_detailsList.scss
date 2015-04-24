@@ -1,0 +1,15 @@
+.details-list {
+  .item {
+    padding: 1rem;
+    border-top: .1rem solid $details-list-border-color;
+    p {
+      color: $secondary-color;
+    }
+    &:first-child {
+      border-top: none;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

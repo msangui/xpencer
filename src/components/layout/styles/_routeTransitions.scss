@@ -1,92 +1,68 @@
 .forward-enter {
 
-  @include vendor-prefix(transform, translate3d(100%, 0, 0));
-  @include transition(transform .3s ease-in-out);
+  @include transform(translate3d(100%, 0, 0));
 
   &.forward-enter-active {
-    @include vendor-prefix(transform, translate3d(0, 0, 0));
+    @include transition(transform .3s ease-in-out);
+    @include transform(translate3d(0, 0, 0));
   }
+
 }
 
 .forward-leave {
 
-  @include vendor-prefix(transform, translate3d(0, 0, 0));
-  @include transition(transform .3s ease-in-out);
+  @include transform(translate3d(0, 0, 0));
 
   &.forward-leave-active {
-    @include vendor-prefix(transform, translate3d(-100%, 0, 0));
+    @include transition(transform .3s ease-in-out);
+
+    @include transform(translate3d(-100%, 0, 0));
   }
-}
-
-.forward-enter, .forward-leave {
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
 
 }
-
 
 .back-enter {
 
-  @include vendor-prefix(transform, translate3d(-100%, 0, 0));
-  @include transition(transform .3s ease-in-out);
+  @include transform(translate3d(-100%, 0, 0));
 
   &.back-enter-active {
-    @include vendor-prefix(transform, translate3d(0, 0, 0));
+    @include transition(transform .3s ease-in-out);
+
+    @include transform(translate3d(0, 0, 0));
   }
+
 }
 
 .back-leave {
 
-  @include vendor-prefix(transform, translate3d(0, 0, 0));
-  @include transition(transform .3s ease-in-out);
+  @include transform(translate3d(0, 0, 0));
 
 
   &.back-leave-active {
-    @include vendor-prefix(transform, translate3d(100%, 0, 0));
+    @include transition(transform .3s ease-in-out);
+
+    @include transform(translate3d(100%, 0, 0));
   }
 }
-
-.back-enter, .back-leave {
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-}
-
 
 
 .top-enter {
 
-  @include vendor-prefix(transform, translate3d(0, -100%, 0));
+  @include transform(translate3d(0, -100%, 0));
   @include transition(transform .3s ease-in-out);
 
   &.top-enter-active {
-    @include vendor-prefix(transform, translate3d(0, 0, 0));
+    @include transform(translate3d(0, 0, 0));
   }
 }
 
 .top-leave {
 
-  @include vendor-prefix(transform, translate3d(0, 0, 0));
+  @include transform(translate3d(0, 0, 0));
   @include transition(transform .3s ease-in-out);
 
 
   &.top-leave-active {
-    @include vendor-prefix(transform, translate3d(0, 100%, 0));
+    @include transform(translate3d(0, 100%, 0));
   }
-}
-
-.top-enter, .top-leave {
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-}
-
-.container {
-  position: relative;
 }

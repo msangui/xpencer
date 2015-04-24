@@ -1,51 +1,34 @@
-var React = require('react');
-var ExpenseActions = require('../../actions/expenseActions');
-var NotificationActions = require('../../actions/notificationActions');
+var React = require('react/addons');
 
-var ExpenseDetailsStore = require('../../stores/expenseDetailsStore');
 var StoreWatchMixin = require('../../mixins/storeWatchMixin');
+var ExpenseActions = require('../../actions/expenseActions');
+var LayoutActions = require('../../actions/layoutActions');
 
-var Header = require('../layout/header.react');
+var ExpenseStore = require('../../stores/expenseStore');
+
+var FormControl = require('../common/formControl.react');
 var FormInput = require('../common/formInput.react');
+var CategoryAutoComplete = require('../category/categoryAutoComplete.react.js');
+var FormSelect = require('../common/formSelect.react');
 var Loading = require('../loading/loading.react');
+var CameraToggle = require('../common/cameraToggle.react');
 
-var AppConstants = require('../../constants/appConstants');
-var TransitionManager = require('../../utils/transitionManager');
+var CurrencyConstants = require('../../constants/currencyConstants');
+var TransitionActions = require('../../actions/transitionActions');
 
-var revalidator = require('revalidator');
 var merge = require('lodash/object/merge');
+var moment = require('moment');
 
-var setExpenseFormState = function(component) {
-  var expenseId = component.context.router.getCurrentParams().expenseId;
-  var storeState = ExpenseDetailsStore.getStoreState(expenseId);
+var setFormState = function(transition) {
+  var expenseId = this.context.router.getCurrentParams().expenseId;
+  var storeState = ExpenseStore.getState(expenseId);
 
-  if (storeState.transition) {
-    TransitionManager.go(component.context.router, storeState.transition);
+  if (transition) {
+    TransitionActions.go(transition);
     return;
   }
 
   return storeState;
-};
-
-var formValidations = {
-  properties: {
-    name: {
-      description: 'the name of the expense',
-      type: 'string',
-      required: true
-    },
-    amount: {
-      description: 'the amount of the expense',
-      type: 'any',
-      pattern: '^[0-9]*$',
-      required: true
-    },
-    currency: {
-      description: 'the currency of the expense',
-      type: 'string',
-      required: true
-    }
-  }
 };
 
 var ExpenseForm = React.createClass({
@@ -53,41 +36,70 @@ var ExpenseForm = React.createClass({
     router: React.PropTypes.func
   },
 
-  mixins: [new StoreWatchMixin(ExpenseDetailsStore, setExpenseFormState)],
+  mixins: [new StoreWatchMixin({
+    store: ExpenseStore,
+    setIntialState() {
+      var expenseId = this.context.router.getCurrentParams().expenseId;
+      return ExpenseStore.getInitialState(expenseId);
+    },
+    componentWillMount() {
+      var expenseId = this.context.router.getCurrentParams().expenseId;
+      var storeState = ExpenseStore.getState(expenseId);
 
-  componentWillMount() {
-    var expenseId = this.context.router.getCurrentParams().expenseId;
-    var storeState = ExpenseDetailsStore.getStoreState(expenseId);
+      var self = this;
 
-    if (expenseId) {
-      // expense remove action through notification
-      this.navigation.right = {
-        icon: 'icon-trash negative',
-        action: function () {
-          NotificationActions.show({
-            title: 'Delete',
-            message: 'Are you sure?',
-            cancelable: true,
-            acceptCallbackAction: ExpenseActions.remove.call(null, expenseId),
-            rejectCallbackAction: ExpenseActions.removeCancelled
-          });
-        }
-      };
-
-      if (!storeState.expense.id && !storeState.loading) {
+      if (expenseId && !storeState.expense._id && !storeState.loading) {
         // let the component mount first
         ExpenseActions.load(expenseId);
       }
 
-    } else {
-      this.navigation.right = false;
-    }
 
-  },
+      // set layout
+      LayoutActions.setHeader({
+        title: expenseId ? 'Edit expense' : 'Add expense',
+        navigation: {
+          left: {
+            icon: 'icon-nav-left',
+            action: function () {
+              if (expenseId) {
+                TransitionActions.go({
+                  route: 'viewExpense',
+                  params: {
+                    expenseId: expenseId
+                  },
+                  direction: 'back',
+                  replace: true
+                });
+              } else {
+                TransitionActions.go({
+                  route: 'listExpenses',
+                  direction: 'back',
+                  replace: true
+                });
+              }
+            }
+          },
+          right: {
+            icon: 'icon-save',
+            action: function () {
+              self.onSubmit();
+            }
+          }
+        }
+      });
+    },
+    setState: setFormState
+  })],
 
   onChange(key, value) {
-    var state = merge({}, this.state);
+    var state = {expense: this.state.expense};
     state.expense[key] = value;
+    this.setState(state);
+  },
+
+  onCategoryChange(key, value) {
+    var state = this.state;
+    state.expense.category[key] = value;
     this.setState(state);
   },
 
@@ -95,64 +107,69 @@ var ExpenseForm = React.createClass({
     ExpenseActions.save(this.state.expense);
   },
 
-  navigation: {
-    left: {
-      icon: 'icon-left-nav',
-      action: function () {
-        var expenseId = this.context.router.getCurrentParams().expenseId;
-        if (expenseId) {
-          TransitionManager.go(this.context.router, {
-            route: 'viewExpense',
-            params: {
-              expenseId: expenseId
-            },
-            direction: 'back',
-            replace: true
-          });
-        } else {
-          TransitionManager.go(this.context.router, {
-            route: 'listExpenses',
-            direction: 'back',
-            replace: true
-          });
-        }
-      }
-    }
-  },
-
   render() {
-    var title = this.state.expense.id ? this.state.expense.name : 'Add new expense';
+    var createdAtInput;
 
-    var validation = revalidator.validate(this.state.expense, formValidations);
+    var currencyOptions = CurrencyConstants.map(function (currency) {
+      return {name: currency.name, value: currency.code}
+    });
+
+    var validationErrors = this.state.error.validation;
+    var expense = this.state.expense;
+
+    if (expense._id) {
+      createdAtInput = (
+        <FormControl error={validationErrors.name}>
+          <FormInput
+            label="Created at"
+            value={moment(expense.createdAt).format('YYYY-MM-DD')}
+            type="date"
+            onChange={this.onChange.bind(this, 'createdAt')} />
+        </FormControl>
+      );
+    }
 
     return (
-      <div>
-        <Header title={title} navigation={this.navigation} />
-        <section className="content">
+      <div className="content-container">
+        <div className="expense-form box">
           <Loading show={this.state.loading}/>
-          <div className="content-padded">
+          <CameraToggle src={expense.imageSrc}/>
+          <div className="form-container">
             <form>
-              <FormInput id="name"
-                label="Name"
-                value={this.state.expense.name}
-                type="text" onChange={this.onChange} />
-              <FormInput id="amount"
-                label="Amount"
-                value={this.state.expense.amount}
-                type="number" onChange={this.onChange} />
-              <FormInput id="currency"
-                label="Currency"
-                value={this.state.expense.currency}
-                type="text" onChange={this.onChange} />
-              <button type="button"
-                disabled={!validation.valid}
-                className="btn btn-positive btn-block"
-                onClick={this.onSubmit}>
-              Save
-              </button>
+              <FormControl error={validationErrors.name}>
+                <FormInput
+                  label="Name"
+                  value={expense.name}
+                  type="text"
+                  onChange={this.onChange.bind(this, 'name')} />
+              </FormControl>
+              <FormControl error={validationErrors.amount}>
+                <FormInput id="amount"
+                  label="Amount"
+                  value={expense.amount}
+                  type="number"
+                  onChange={this.onChange.bind(this, 'amount')} />
+              </FormControl>
+              <FormControl error={validationErrors.currency}>
+                <FormSelect
+                  label="Currency"
+                  value={expense.currency}
+                  options={currencyOptions}
+                  type="text"
+                  onChange={this.onChange.bind(this, 'currency')} />
+              </FormControl>
+              {createdAtInput}
+              <FormControl error={validationErrors.category.name}>
+                <CategoryAutoComplete
+                  label="Category"
+                  value={expense.category.name}
+                  onChange={this.onCategoryChange.bind(this, 'name')}
+                  type="text"
+                />
+              </FormControl>
             </form>
           </div>
-        </section>
+        </div>
       </div>
     );
   }

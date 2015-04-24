@@ -1,0 +1,80 @@
+2015-04-21 16:43:46.681 Xpencer[9872:332255] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Data/Application/82E43102-5A2D-42D1-93B9-32D6A5AC7729/Library/Cookies/Cookies.binarycookies
+2015-04-21 16:43:46.926 Xpencer[9872:332255] Apache Cordova native platform version 3.7.0 is starting.
+2015-04-21 16:43:46.926 Xpencer[9872:332255] Multi-tasking -> Device: YES, App: YES
+2015-04-21 16:43:46.938 Xpencer[9872:332255] Unlimited access to network resources
+2015-04-21 16:43:46.947 Xpencer[9872:332255] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-21 16:43:47.471 Xpencer[9872:332255] [CDVTimer][statusbar] 118.230045ms
+2015-04-21 16:43:47.471 Xpencer[9872:332255] [CDVTimer][TotalPluginStartup] 118.384957ms
+2015-04-21 16:43:48.183 Xpencer[9872:332255] Resetting plugins due to page load.
+2015-04-21 16:43:48.533 Xpencer[9872:332255] Finished load of: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Bundle/Application/EF89EBCB-AB71-4E88-A27D-129186D00460/Xpencer.app/www/index.html#/
+2015-04-21 16:44:53.407 Xpencer[10046:333744] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Data/Application/B70EF63B-E37F-4754-B52B-4A91BCB91CF7/Library/Cookies/Cookies.binarycookies
+2015-04-21 16:44:53.548 Xpencer[10046:333744] Apache Cordova native platform version 3.7.0 is starting.
+2015-04-21 16:44:53.548 Xpencer[10046:333744] Multi-tasking -> Device: YES, App: YES
+2015-04-21 16:44:53.550 Xpencer[10046:333744] Unlimited access to network resources
+2015-04-21 16:44:53.553 Xpencer[10046:333744] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-21 16:44:53.909 Xpencer[10046:333744] [CDVTimer][statusbar] 78.685999ms
+2015-04-21 16:44:53.909 Xpencer[10046:333744] [CDVTimer][TotalPluginStartup] 78.920960ms
+2015-04-21 16:44:54.057 Xpencer[10046:333744] Resetting plugins due to page load.
+2015-04-21 16:44:54.331 Xpencer[10046:333744] Finished load of: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Bundle/Application/759A2B1F-551D-452B-BB6A-6598842A1D87/Xpencer.app/www/index.html#/
+2015-04-21 16:46:25.678 Xpencer[10173:335076] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Data/Application/DC6C58BB-1A04-4839-A926-97AEBB387D72/Library/Cookies/Cookies.binarycookies
+2015-04-21 16:46:25.774 Xpencer[10173:335076] Apache Cordova native platform version 3.7.0 is starting.
+2015-04-21 16:46:25.775 Xpencer[10173:335076] Multi-tasking -> Device: YES, App: YES
+2015-04-21 16:46:25.776 Xpencer[10173:335076] Unlimited access to network resources
+2015-04-21 16:46:25.778 Xpencer[10173:335076] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-21 16:46:26.029 Xpencer[10173:335076] [CDVTimer][statusbar] 66.918969ms
+2015-04-21 16:46:26.029 Xpencer[10173:335076] [CDVTimer][TotalPluginStartup] 67.088008ms
+2015-04-21 16:46:26.157 Xpencer[10173:335076] Resetting plugins due to page load.
+2015-04-21 16:46:26.400 Xpencer[10173:335076] Finished load of: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Bundle/Application/4FF4DD97-7879-46F7-A01A-0DACF410A271/Xpencer.app/www/index.html#/
+2015-04-21 16:48:19.399 Xpencer[10287:337406] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Data/Application/422B9163-B6AD-43C8-9382-A5CD3D1B3069/Library/Cookies/Cookies.binarycookies
+2015-04-21 16:48:19.656 Xpencer[10287:337406] Apache Cordova native platform version 3.7.0 is starting.
+2015-04-21 16:48:19.657 Xpencer[10287:337406] Multi-tasking -> Device: YES, App: YES
+2015-04-21 16:48:19.670 Xpencer[10287:337406] Unlimited access to network resources
+2015-04-21 16:48:19.681 Xpencer[10287:337406] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-21 16:48:20.183 Xpencer[10287:337406] [CDVTimer][statusbar] 139.121950ms
+2015-04-21 16:48:20.183 Xpencer[10287:337406] [CDVTimer][TotalPluginStartup] 139.286041ms
+2015-04-21 16:48:20.377 Xpencer[10287:337406] Resetting plugins due to page load.
+2015-04-21 16:48:20.776 Xpencer[10287:337406] Finished load of: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Bundle/Application/222DA8A0-CFA2-4D86-8198-E65701BA23C6/Xpencer.app/www/index.html#/
+2015-04-21 17:35:27.449 Xpencer[10756:350267] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Data/Application/2710A131-3B26-4C56-8069-C96C97690C21/Library/Cookies/Cookies.binarycookies
+2015-04-21 17:35:27.552 Xpencer[10756:350267] Apache Cordova native platform version 3.7.0 is starting.
+2015-04-21 17:35:27.552 Xpencer[10756:350267] Multi-tasking -> Device: YES, App: YES
+2015-04-21 17:35:27.554 Xpencer[10756:350267] Unlimited access to network resources
+2015-04-21 17:35:27.556 Xpencer[10756:350267] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-21 17:35:27.814 Xpencer[10756:350267] [CDVTimer][statusbar] 68.629980ms
+2015-04-21 17:35:27.814 Xpencer[10756:350267] [CDVTimer][TotalPluginStartup] 68.783998ms
+2015-04-21 17:35:27.950 Xpencer[10756:350267] Resetting plugins due to page load.
+2015-04-21 17:35:28.203 Xpencer[10756:350267] Finished load of: file:///Users/matiassanguinetti/Library/Developer/CoreSimulator/Devices/BFC768F4-E3E0-4B1F-AC73-CE8A05C56A53/data/Containers/Bundle/Application/9C178144-B755-4A13-BBD1-E38648A10BAD/Xpencer.app/www/index.html#/

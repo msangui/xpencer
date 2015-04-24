@@ -2,7 +2,7 @@ var merge = require('lodash/object/merge');
 var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
 var EventEmitter = require('events').EventEmitter;
-var ExpenseDetailsStore = require('./expenseDetailsStore');
+var ExpenseDetailsStore = require('./expenseStore');
 
 var _expenses = false;
 
@@ -13,11 +13,10 @@ function _loadExpenses(expenses) {
 
   expenses.forEach(function(expense) {
     var found = false;
-    _expenses.every(function(_expense, index) {
-      if (_expense.id === expense.id) {
+    _expenses.forEach(function(_expense, index) {
+      if (_expense._id === expense._id) {
         _expenses[index] = expense;
         found = true;
-        return false;
       }
     });
 
@@ -29,23 +28,27 @@ function _loadExpenses(expenses) {
 }
 
 function _updateExpense(expense) {
-  _expenses.every(function(_expense, index) {
-    if (_expense.id === expense.id) {
+  if (!_expenses) {
+    return;
+  }
+  _expenses.forEach(function(_expense, index) {
+    if (_expense._id === expense._id) {
       _expenses[index] = expense;
-      return false;
     }
   });
 }
 
 function _addExpense(expense) {
+  if (!_expenses) {
+    return;
+  }
   _expenses.push(expense);
 }
 
-function _removeExpense(expense) {
-  _expenses.every(function(_expense, index) {
-    if (_expense.id === expense.id) {
+function _removeExpense(expenseId) {
+  _expenses.forEach(function(_expense, index) {
+    if (_expense._id === expenseId) {
       _expenses.splice(index, 1);
-      return false;
     }
   });
 }
@@ -60,7 +63,7 @@ function _getMonthExpenses(month) {
   }
 
   return _expenses.filter(function (_expense) {
-    var expenseMonth = new Date(_expense.updatedAt).getMonth() + 1;
+    var expenseMonth = new Date(_expense.createdAt).getMonth() + 1;
     return expenseMonth === month;
   });
 }
@@ -85,7 +88,7 @@ const ExpenseListStore = merge({}, EventEmitter.prototype, {
     this.removeListener('change', callback);
   },
 
-  getStoreState(month) {
+  getState(month) {
     return {
       expenses: _getMonthExpenses(month),
       loading: this.loading,
@@ -149,7 +152,7 @@ ExpenseListStore.dispatchToken = AppDispatcher.register(function(actionPayload) 
 
     case AppConstants.EXPENSES.REMOVE_SUCCESS:
       ExpenseListStore.loading = false;
-      _removeExpense(payload.expenseData.id);
+      _removeExpense(payload.expenseId);
       ExpenseListStore.emitChange('change');
       break;
 

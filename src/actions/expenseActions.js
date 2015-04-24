@@ -36,14 +36,15 @@ var ExpenseActions = {
       action: AppConstants.EXPENSES.LOAD_ALL
     });
 
-    ExpenseAPI.getAllExpenses(month).then(function(expenseData) {
+    ExpenseAPI.getAllExpenses(month).then(function(expenses) {
       // API call succeeded
       AppDispatcher.dispatch({
         action: AppConstants.EXPENSES.LOAD_ALL_SUCCESS,
         payload: {
-          expensesData: expenseData
+          expensesData: expenses
         }
       });
+
     }, function (error) {
       // API call failed
       AppDispatcher.dispatch({
@@ -75,7 +76,8 @@ var ExpenseActions = {
       AppDispatcher.dispatch({
         action: AppConstants.EXPENSES.ADD_FAIL,
         payload: {
-          error: error
+          error: error,
+          expenseData: expenseData
         }
       });
     });
@@ -105,7 +107,7 @@ var ExpenseActions = {
   },
 
   save(expenseData) {
-    if (expenseData.id) {
+    if (expenseData._id) {
       this.update(expenseData);
     } else {
       this.add(expenseData);
@@ -124,6 +126,7 @@ var ExpenseActions = {
         payload: {
           expenseId: expenseId
         }
+
       });
     }, function (error) {
       AppDispatcher.dispatch({

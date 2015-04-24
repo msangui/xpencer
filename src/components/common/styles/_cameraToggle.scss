@@ -1,0 +1,27 @@
+.camera-toggle-container {
+  text-align: center;
+  background: white;
+  .camera-toggle {
+    padding: 1rem;
+    display: inline-block;
+  }
+  .icon-camera {
+    display: inline-block;
+    font-size: 15rem;
+    line-height: 1;
+    padding: 1.5rem;
+    background-color: $camera-toggle-background-color;
+    color: $camera-toggle-toggle-color;
+    @include vendor-prefix(border-radius, 10rem);
+    &:active {
+      @include pressed();
+    }
+
+  }
+}
+
+.camera-source-modal {
+  h4 {
+    padding: 0 1rem 1rem;
+  }
+}

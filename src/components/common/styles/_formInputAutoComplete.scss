@@ -1,0 +1,53 @@
+.form-input-auto-complete {
+  position: relative;
+  padding-bottom: 15rem;
+
+  input {
+    margin-bottom: 0;
+    @include vendor-prefix(border-radius, .3rem .3rem 0 0)
+  }
+
+  .suggestion-container {
+    margin-bottom: 10px;
+    position: absolute;
+    width: 100%;
+  }
+
+  .suggestion-list {
+    border-top: none;
+    border-bottom: none;
+    border-right: .1rem solid $details-list-border-color;
+    border-left: .1rem solid $details-list-border-color;
+    margin: 0;
+    .suggestion {
+      cursor: pointer;
+      display: block;
+      background: #Fafafa;
+      height: 5rem;
+      line-height: 5rem;
+      padding: 0 1rem;
+      border-bottom: 1px solid $details-list-border-color;
+    }
+  }
+
+  .suggestion-list-enter {
+    @include vendor-prefix(transform-origin, 0 0);
+    @include vendor-prefix(transform, scale3d(1, 0, 1));
+
+    &.suggestion-list-enter-active{
+      @include transition(transform .1s ease-in-out);
+      @include vendor-prefix(transform, scale3d(1, 1, 1));
+    }
+  }
+
+  .suggestion-list-leave {
+    @include vendor-prefix(transform-origin, 0 0);
+    @include vendor-prefix(transform, scale3d(1, 1, 1));
+
+    &.suggestion-list-leave-active{
+      @include transition(transform .1s ease-in-out);
+      @include vendor-prefix(transform, scale3d(1, 0, 1));
+    }
+  }
+
+}

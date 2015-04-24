@@ -1,16 +1,46 @@
-var StoreWatchMixin = function(store, setComponentState){
+var StoreWatchMixin = function(config){
+  var {store, setInitialState, componentWillMount, componentWillUnmount, setState, replace} = config;
   return {
     getInitialState(){
-      return setComponentState(this);
+      var initialState = {};
+
+      if (setInitialState) {
+        initialState = setInitialState.apply(this, arguments);
+      } else if (setState) {
+        initialState = setState.apply(this, arguments);
+      }
+
+      return initialState;
     },
     componentWillMount(){
-      store.addChangeListener(this._onChange)
+      if (store) {
+        store.addChangeListener(this._onChange)
+      }
+      if (componentWillMount) {
+        componentWillMount.apply(this);
+      }
     },
     componentWillUnmount(){
-      store.removeChangeListener(this._onChange)
+      if (store) {
+        store.removeChangeListener(this._onChange)
+      }
+      if (componentWillUnmount) {
+        componentWillUnmount.apply(this);
+      }
     },
     _onChange(){
-      this.setState(setComponentState(this));
+      var state = {};
+
+      if (setState) {
+        state = setState.apply(this, arguments);
+      }
+
+      if (replace) {
+        this.replaceState(state);
+      } else {
+        this.setState(state);
+      }
+
     }
   }
 };

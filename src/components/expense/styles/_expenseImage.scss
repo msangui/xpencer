@@ -1,0 +1,24 @@
+.expense-image {
+  min-height: 150px;
+  text-align: center;
+  .icon-image {
+    display: inline-block;
+    font-size: 150px;
+    line-height: 1;
+    padding: 15px;
+    color: #59885D;
+  }
+  img {
+    height: 150px;
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .expense-image-enter {
+    opacity: 0;
+  }
+  .expense-image-enter-active {
+    opacity: 1;
+    @include transition(opacity .3s ease-in-out);
+  }
+}

@@ -1,0 +1,74 @@
+* {
+  @include vendor-prefix(user-select, none);
+  @include vendor-prefix(box-sizing, border-box);
+  &:before {
+    @include vendor-prefix(box-sizing, border-box);
+  }
+  &:after {
+    @include vendor-prefix(box-sizing, border-box);
+  }
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  font-size: $body-font-size;
+  color: $base-color;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,h2,h3,h4,h5,h6,p,ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 500;
+}
+
+h1,
+.h1 {
+  font-size: 3.6rem;
+}
+h2,
+.h2 {
+  font-size: 3.0rem;
+}
+h3,
+.h3 {
+  font-size: 2.4rem;
+}
+h4,
+.h4 {
+  font-size: 1.8rem;
+}
+h5,
+.h5 {
+  font-size: 1.4rem;
+}
+h6,
+.h6 {
+  font-size: 1.2rem;
+}
+
+.right {
+  text-align: right;
+}
+.left {
+  text-align: left;
+}
+.center {
+  text-align: center;
+}

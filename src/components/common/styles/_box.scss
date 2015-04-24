@@ -1,0 +1,4 @@
+.box {
+  background: $main-background-color;
+  @include vendor-prefix(box-shadow, 0 0 .3rem rgba(0,0,0,0.3));
+}

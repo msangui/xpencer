@@ -1,0 +1,68 @@
+.expense-list-item {
+  padding: 1rem 0;
+  display: block;
+  background: white;
+  margin: .7rem 0;
+  height: 7rem;
+  .image-loaded {
+    &.loaded {
+      .icon-image {
+        color: $positive-color;
+      }
+
+    }
+
+    .icon-image {
+      font-size: 3rem;
+      line-height: 5rem;
+      color: #777;
+      position: absolute;
+      left: 2.5rem;
+      top: -1rem;
+    }
+  }
+
+  .details {
+    padding-left: 3rem;
+    h4 {
+      display: inline-block;
+      max-width: 100%;
+      @include text-ellipsis();
+    }
+
+    .amount {
+      max-width: 100%;
+      padding: .5rem 0;
+      color: $secondary-color;
+      @include text-ellipsis();
+
+    }
+  }
+
+  .category {
+    text-align: right;
+    .label {
+      display: inline-block;
+      color: white;
+      padding: .5rem;
+      max-width: 100%;
+      background: $positive-color;
+      @include text-ellipsis();
+      @include vendor-prefix(border-radius, .3rem);
+    }
+  }
+
+  .nav {
+    font-size: $icon-action-font-size;
+    line-height: $expense-list-item-height;
+    color: $secondary-color;
+    .icon {
+      position: relative;
+      right: .5rem;
+    }
+  }
+  &:active {
+    @include pressed();
+  }
+
+}

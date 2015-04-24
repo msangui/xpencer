@@ -1,8 +1,7 @@
 var AppConstants = require('../constants/appConstants');
 var AppDispatcher = require('../dispatchers/appDispatcher');
-var Q = require('q');
 
-var NotificationAction = {
+var NotificationActions = {
 
   show(notificationData) {
     AppDispatcher.dispatch({
@@ -28,4 +27,4 @@ var NotificationAction = {
   }
 };
 
-module.exports = NotificationAction;
+module.exports = NotificationActions;

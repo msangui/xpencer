@@ -1,8 +1,28 @@
-var React = require('react');
+var React = require('react/addons');
+var PureRenderMixin = React.addons.PureRenderMixin;
 
 var FormInput = React.createClass({
+
+  mixins: [PureRenderMixin],
+
   onChange(event) {
-    this.props.onChange(this.props.id, event.target.value);
+    var value = event.target.value;
+    if (value && this.props.type === 'number') {
+      value = parseFloat(value);
+    }
+    this.props.onChange(value);
+  },
+
+  onBlur() {
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
+  },
+
+  onFocus() {
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
   },
 
   render() {
@@ -11,6 +31,8 @@ var FormInput = React.createClass({
         value={this.props.value}
         type={this.props.type}
         placeholder={this.props.label}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         onChange={this.onChange} />
     );
   }

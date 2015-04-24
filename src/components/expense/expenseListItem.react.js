@@ -1,34 +1,50 @@
-var React = require('react');
-var Hammer = require('react-hammerjs');
-var TransitionManager = require('../../utils/transitionManager');
+var React = require('react/addons');
+var TransitionActions = require('../../actions/transitionActions');
+var PureRenderMixin = React.addons.PureRenderMixin;
 
 var ExpenseListItem = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.func,
-    navigation: React.PropTypes.object
-  },
+
+  mixins: [PureRenderMixin],
 
   viewExpense() {
-    TransitionManager.go(this.context.router, {
+    TransitionActions.go({
       route: 'viewExpense',
       params: {
-        expenseId: this.props.expenseItem.id
+        expenseId: this.props.expense._id
       }
     });
   },
 
   render() {
+    var imageLoaded = 'col-xs-1 image-loaded';
+
+    if (this.props.expense.imageSrc) {
+      imageLoaded += ' loaded';
+    }
+
     return (
-      <Hammer component="li" className="table-view-cell media" onTap={this.viewExpense}>
-        <a className="navigate-right">
-          <div class="media-body">
-            {this.props.expenseItem.name}
-            <p>
-             {this.props.expenseItem.amount} - {this.props.expenseItem.currency}
-            </p>
+      <li className="box expense-list-item" onClick={this.viewExpense}>
+        <div className="row">
+          <div className={imageLoaded}>
+            <span className="icon icon-image"></span>
           </div>
-        </a>
-      </Hammer>
+          <div className="col-xs-9 details">
+            <h4 className="title">{this.props.expense.name}</h4>
+            <div className="row">
+              <div className="col-xs-6">
+                <p className="amount">${this.props.expense.amount} {this.props.expense.currency}</p>
+              </div>
+              <div className="col-xs-6 category">
+                <span className="label">{this.props.expense.category.name}</span>
+              </div>
+            </div>
+          </div>
+          <div className="col-xs-1 nav">
+            <span className="icon icon-nav-right"></span>
+          </div>
+          <div className="col-xs-1"></div>
+        </div>
+      </li>
     );
   }
 });

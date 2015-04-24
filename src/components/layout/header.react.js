@@ -1,37 +1,59 @@
-var React = require('react');
-var Hammer = require('react-hammerjs');
+var React = require('react/addons');
+var ReactTransitionGroup = React.addons.CSSTransitionGroup;
+var StoreWatchMixin = require ('../../mixins/storeWatchMixin');
+var LayoutStore = require('../../stores/layoutStore');
+
+function setHeaderState() {
+  console.log('state', LayoutStore.getState().headerData)
+  return LayoutStore.getState().headerData;
+}
 
 var Header = React.createClass({
 
   contextTypes: {
-    router: React.PropTypes.func,
-    navigation: React.PropTypes.object
+    router: React.PropTypes.func
+  },
+
+  mixins: [new StoreWatchMixin({
+    store: LayoutStore,
+    setState: setHeaderState,
+    replace: true
+  })],
+
+  triggerLeftAction() {
+    if (this.state.navigation && this.state.navigation.left && !this.state.navigation.left.disabled) {
+      this.state.navigation.left.action();
+    }
+  },
+
+  triggerRightAction() {
+    if (this.state.navigation && this.state.navigation.right && !this.state.navigation.right.disabled) {
+      this.state.navigation.right.action();
+    }
   },
 
   render() {
     var left;
     var right;
-    var navigation = this.props.navigation;
+    var navigation = this.state.navigation;
     if (navigation) {
       if (navigation.left) {
-        left = <Hammer component="a"
-          className={"icon pull-left " + navigation.left.icon}
-          onTap={navigation.left.action.bind(this)}></Hammer>
+        left = (<span className={"icon " + navigation.left.icon} disabled={navigation.left.disabled}></span>);
       }
       if (navigation.right) {
-        right = <Hammer component="a"
-          className={"icon pull-right " + navigation.right.icon}
-          onTap={navigation.right.action.bind(this)}></Hammer>
+        right = (<span className={"icon " + navigation.right.icon} disabled={navigation.right.disabled}></span>);
       }
     }
 
     return (
-      <header className="main-header bar bar-nav">
-        {left}
-        {right}
-        <h1 className="title">
-          {this.props.title}
-        </h1>
+      <header className="nav-bar">
+        <div className="row">
+          <div className="action col-xs-3" onClick={this.triggerLeftAction}>{left}</div>
+          <div className="col-xs-6 title">
+            <h1>{this.state.title}</h1>
+          </div>
+          <div className="action col-xs-3" onClick={this.triggerRightAction}>{right}</div>
+        </div>
       </header>
     );
   }

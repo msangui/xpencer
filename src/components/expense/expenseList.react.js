@@ -1,55 +1,71 @@
 var React = require('react');
 var ExpenseListStore = require('../../stores/expenseListStore');
 var ExpenseActions = require('../../actions/expenseActions');
+var LayoutActions = require('../../actions/layoutActions');
+var TransitionActions = require('../../actions/transitionActions');
+
 var StoreWatchMixin = require('../../mixins/storeWatchMixin');
+var PureRenderMixin = React.addons.PureRenderMixin;
+
 var ExpenseListItem = require('./expenseListItem.react.js');
 var Header = require('../layout/header.react');
 var Loading = require('../loading/loading.react');
 
 function setExpenseListState() {
-  var storeState = ExpenseListStore.getStoreState();
-
-  return storeState;
+  return ExpenseListStore.getState(new Date().getMonth() + 1);
 }
 
 var ExpenseList = React.createClass({
-  mixins: [new StoreWatchMixin(ExpenseListStore, setExpenseListState)],
-
-  navigation: {
-    right: {
-      icon: 'icon-plus',
-      action: function () {
-        this.context.router.direction = 'forward';
-        this.context.router.transitionTo('addExpense');
-      }
-    }
-  },
+  mixins: [new StoreWatchMixin({
+    store: ExpenseListStore,
+    setState: setExpenseListState
+  }), PureRenderMixin],
 
   componentWillMount() {
-    var storeState = ExpenseListStore.getStoreState();
+    var storeState = ExpenseListStore.getState();
 
     if (!storeState.expenses && !storeState.loading) {
       // no expense loaded yet!
       // let the component mount first
-      ExpenseActions.loadAll();
+      ExpenseActions.loadAll(new Date().getMonth() + 1);
     }
+
+    // set layout
+    LayoutActions.setHeader({
+      title: 'Expenses',
+      navigation: {
+        right: {
+          icon: 'icon-plus',
+          action: function () {
+            TransitionActions.go({
+              direction: 'forward',
+              route: 'addExpense'
+            });
+          }
+        }
+      }
+    });
   },
+
   render() {
-    var expenseItems;
+    var expenses;
+    var expenseList;
     if (this.state.expenses) {
-      expenseItems = this.state.expenses.map(function (expenseItem) {
-        return (<ExpenseListItem expenseItem={expenseItem} />);
+      expenses = this.state.expenses.map(function (expense) {
+        return (<ExpenseListItem key={expense._id} expense={expense} />);
       });
+      expenseList = (
+        <ul>
+          {expenses}
+        </ul>
+      )
     }
 
     return (
-      <div>
-        <Header title="Expenses" navigation={this.navigation} />
-        <div className="content expense-list">
-          <Loading show={this.state.loading}/>
-          <ul className="table-view">
-            {expenseItems}
-          </ul>
+      <div className="content-container">
+        <Loading show={this.state.loading}/>
+        <div className="expense-list">
+          {expenseList}
         </div>
       </div>
     );

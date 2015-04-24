@@ -1,0 +1,15 @@
+.option-list {
+  .details-list {
+    border: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    .item {
+      border: none;
+      font-size: 1.4rem;
+      &:active {
+        background: $option-list-active-color;
+      }
+    }
+  }
+}

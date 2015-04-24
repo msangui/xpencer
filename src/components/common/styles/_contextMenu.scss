@@ -1,0 +1,57 @@
+.context-menu {
+  position: absolute;
+  padding: 3rem 0 1rem;
+  top: 1rem;
+  border: .1rem solid #ddd;
+  @include vendor-prefix(box-shadow, 0 0 .2rem rgba(0,0,0,0.4));
+  &.right-position {
+    right: 1rem;
+    .action-icon {
+      right: .4rem;
+    }
+  }
+  &.left-position {
+    left: 1rem;
+    .action-icon {
+      left: .4rem;
+    }
+  }
+  .context-menu-item-title {
+    padding-left: .5rem;
+  }
+}
+
+.context-menu-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+}
+
+.context-menu-enter {
+  opacity: .9;
+  .context-menu {
+    @include vendor-prefix(transform-origin, "top right");
+    @include transform(scale3d(.3,.3,.3));
+  }
+
+}
+.context-menu-enter-active {
+  opacity: 1;
+  @include transition(opacity .1s ease-in);
+  .context-menu {
+    @include transform(scale3d(1,1,1));
+    @include transition(all .1s ease-in-out);
+  }
+}
+
+.action-icon {
+  font-weight: 500;
+  font-size: $icon-action-font-size;
+  line-height: $header-height;
+  color: $primary-color;
+  position: absolute;
+  top: -1.1rem;
+}

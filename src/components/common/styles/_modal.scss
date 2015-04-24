@@ -1,0 +1,52 @@
+.modal-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .1);
+  z-index: 10;
+  @include flexbox;
+  @include justify-content(center);
+  @include align-items(center);
+  .modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    position: relative;
+    margin: auto;
+    border-radius: 1px;
+    text-align: center;
+    padding: 10px 0;
+    overflow: auto;
+    z-index: 11; /* 1px higher than the overlay layer */
+  }
+}
+
+.modal-enter {
+  opacity: .8;
+  .modal-content {
+    @include transform(translate3d(0, -600px, 0));
+  }
+}
+.modal-enter-active {
+  opacity: 1;
+  @include transition(opacity .3s ease-in-out);
+  .modal-content {
+    @include transition(transform .3s ease-in-out);
+    @include transform(translate3d(0, 0, 0));
+  }
+}
+.modal-leave {
+  opacity: 1;
+  .modal-content {
+    @include transform(translate3d(0, 0, 0));
+  }
+}
+.modal-leave-active {
+  opacity: .8;
+  @include transition(opacity .3s ease-in-out);
+  .modal-content{
+    @include transition(transform .3s ease-in-out);
+    @include transform(translate3d(0, 600px, 0));
+  }
+}

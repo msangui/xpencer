@@ -26,7 +26,7 @@ const NotificationStore = merge({}, EventEmitter.prototype, {
     this.removeListener('change', callback);
   },
 
-  getStoreState() {
+  getState() {
     return {
       show: this.show,
       notificationData: _notificationData
@@ -43,13 +43,13 @@ NotificationStore.dispatchToken = AppDispatcher.register(function(actionPayload)
     case AppConstants.NOTIFICATIONS.SHOW:
       NotificationStore.show = true;
       _initNotification(payload.notificationData)
-      NotificationStore.emitChange('change');
+      NotificationStore.emitChange();
       break;
 
     case AppConstants.NOTIFICATIONS.HIDE:
       NotificationStore.show = false;
       _initNotification({});
-      NotificationStore.emitChange('change');
+      NotificationStore.emitChange();
       break;
     default:
     // no op

@@ -1,0 +1,54 @@
+.form-control {
+  position: relative;
+  padding: 1rem 0;
+  &.error {
+    input, textarea, select {
+      border-color: $negative-color;
+    }
+  }
+  input, textarea, select {
+    -webkit-user-select: text;
+    -webkit-appearance: none;
+    padding-left: 1rem;
+    background: transparent;
+    outline: none;
+  }
+  input, select {
+    height: $form-control-height;
+    @include vendor-prefix(border-radius, .3rem);
+    border: .1rem solid $form-control-border-color;
+    display: block;
+    width: 100%;
+  }
+
+  select {
+    &.empty {
+      color: #999;
+    }
+  }
+
+  textarea {
+    @include vendor-prefix(border-radius, .3rem);
+    border: .1rem solid $form-control-border-color;
+    display: block;
+    width: 100%;
+    resize: none;
+  }
+  label {
+    color: $form-control-label-color;
+    position: relative;
+    display: block;
+    padding-bottom: .5rem;
+  }
+  &.number {
+    input, label {
+      text-align: right;
+    }
+  }
+  .error-message {
+    position: absolute;
+    width: 100%;
+    color: $negative-color;
+    font-size: 1rem;
+  }
+}

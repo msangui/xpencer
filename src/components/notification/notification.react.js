@@ -2,15 +2,18 @@ var React = require('react');
 var StoreWatchMixin = require('../../mixins/storeWatchMixin');
 var NotificationStore = require('../../stores/notificationStore');
 var NotificationActions = require('../../actions/notificationActions');
-var Hammer = require('react-hammerjs');
+var ReactTransitionGroup = React.addons.CSSTransitionGroup;
 
 function setNotificationState() {
-  return NotificationStore.getStoreState();
+  return NotificationStore.getState();
 }
 
 var Notification = React.createClass({
 
-  mixins: [new StoreWatchMixin(NotificationStore, setNotificationState)],
+  mixins: [new StoreWatchMixin({
+    store: NotificationStore,
+    setState: setNotificationState
+  })],
 
   acceptNotification() {
     NotificationActions.hide(this.state.notificationData.acceptCallbackAction);
@@ -23,37 +26,48 @@ var Notification = React.createClass({
   render() {
     var options;
     var message;
-    if (this.state.notificationData.cancelable) {
-      options = (
-        <div className="notification-options">
-          <Hammer component="button"
-            className="btn btn-positive btn-block"
-            onTap={this.acceptNotification}>OK</Hammer>
-          <Hammer component="button"
-            className="btn btn-negative btn-block btn-outlined"
-            onTap={this.cancelNotification}>Cancel</Hammer>
-        </div>
-      );
-    }
+    var notification;
 
-    if (this.state.notificationData.message) {
-      message = (<p>{this.state.notificationData.message}</p>);
-    }
+    if (this.state.show) {
+      if (this.state.notificationData.cancelable) {
+        options = (
+          <div className="notification-options">
+            <div
+              className="option ok"
+              onClick={this.acceptNotification}>
+              <span className="icon icon-tick"></span>
+            </div>
+            <div
+              className="option cancel"
+              onClick={this.cancelNotification}>
+              <span className="icon icon-cross"></span>
+            </div>
+          </div>
+        );
+      }
 
-    return (
-      <Hammer className={'notification ' + (this.state.show ? 'shown': '')}
-        component="div"
-        onTap={this.cancelNotification}>
-        <div className="popover">
-          <header className="bar bar-nav">
-            <h2 className="title">{this.state.notificationData.title}</h2>
-          </header>
-          <div className="table-view content-padded">
+      if (this.state.notificationData.message) {
+        message = (<div className="notification-message">{this.state.notificationData.message}</div>);
+      }
+      notification = (
+        <div className="notification-overlay" onClick={this.cancelNotification}>
+          <div className="notification">
+            <div className="notification-title">
+              {this.state.notificationData.title}
+            </div>
             {message}
             {options}
           </div>
         </div>
-      </Hammer>
+
+      )
+    }
+
+
+    return (
+      <ReactTransitionGroup transitionName="notification">
+        {notification}
+      </ReactTransitionGroup>
     );
   }
 
