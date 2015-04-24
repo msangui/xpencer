@@ -1,24 +1,27 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
+var FluxStore = require('./fluxStore');
 
-const CategoryFilterListStore = merge({}, EventEmitter.prototype, {
+
+const CategoryFilterListStore = new FluxStore({
 
   categories: [],
 
-  emitChange() {
-    this.emit('change');
+  listensTo: [
+    {action: AppConstants.CATEGORIES.FILTER, handler: 'start'},
+    {action: AppConstants.CATEGORIES.FILTER_SUCCESS, handler: 'filterSuccess'},
+    {action: AppConstants.CATEGORIES.FILTER_FAIL, handler: 'filterFail'}
+  ],
+
+  start(){
+    this.categories = [];
   },
 
-  addChangeListener(callback) {
-    this.on('change', function () {
-      callback();
-    });
+  filterSuccess(payload){
+    this.categories = payload.categories;
   },
 
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  filterFail(){
+    this.categories = [];
   },
 
   getInitialState() {
@@ -35,28 +38,5 @@ const CategoryFilterListStore = merge({}, EventEmitter.prototype, {
 
 });
 
-CategoryFilterListStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.CATEGORIES.FILTER:
-      CategoryFilterListStore.categories = [];
-      CategoryFilterListStore.emitChange('change');
-      break;
-
-    case AppConstants.CATEGORIES.FILTER_SUCCESS:
-      CategoryFilterListStore.categories = payload.categories;
-      CategoryFilterListStore.emitChange('change');
-      break;
-
-    case AppConstants.CATEGORIES.FILTER_FAIL:
-      CategoryFilterListStore.categories = [];
-      CategoryFilterListStore.emitChange('change');
-      break;
-
-    default:
-    // no op
-  }
-});
 
 module.exports = CategoryFilterListStore;

@@ -28,7 +28,7 @@ var Notification = React.createClass({
     var message;
     var notification;
 
-    if (this.state.show) {
+    if (this.state.open) {
       if (this.state.notificationData.cancelable) {
         options = (
           <div className="notification-options">

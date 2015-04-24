@@ -33,7 +33,7 @@ var App = React.createClass({
   },
 
   _onTransition(){
-    var transition = TransitionStore.getTransition();
+    var transition = TransitionStore.getState();
     if (transition) {
       TransitionManager.go(this.context.router, transition);
     }

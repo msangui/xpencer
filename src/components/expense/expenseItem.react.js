@@ -37,7 +37,7 @@ var ExpenseItem = React.createClass({
       var expenseId = this.context.router.getCurrentParams().expenseId;
       var storeState = ExpenseStore.getState(expenseId);
 
-      if (!storeState.expense._id && !storeState.loading) {
+      if (storeState.expense && !storeState.expense._id && !storeState.loading) {
         // let the component mount first
         ExpenseActions.load(expenseId);
       }

@@ -58,8 +58,8 @@ const appConstants = {
     WENT: 'transitions::went'
   },
   GOOGLE: {
-    CLIENT_ID: '440092196371-ec85f8eg91rhrd0cfjfuvfkp0qpmcj6k.apps.googleusercontent.com',
-    CLIENT_SECRET: '7kcS1gsgWZ9xHHa4kbnhMu2r',
+    CLIENT_ID: '',
+    CLIENT_SECRET: '',
     LOGIN_URI: 'https://accounts.google.com/o/oauth2/auth'
   },
   LOGIN: {

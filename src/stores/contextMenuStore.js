@@ -1,29 +1,29 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
+var FluxStore = require('./fluxStore');
 
 var _contextMenuData = {};
-
 
 function _initContextMenu(contextMenuData) {
   _contextMenuData = contextMenuData;
 }
 
-const ContextMenuStore = merge({}, EventEmitter.prototype, {
+const ContextMenuStore = new FluxStore({
 
   open: false,
 
-  emitChange() {
-    this.emit('change');
+  listensTo: [
+    {action: AppConstants.CONTEXT_MENU.OPEN, handler: 'show'},
+    {action: AppConstants.CONTEXT_MENU.CLOSE, handler: 'hide'}
+  ],
+
+  show(payload) {
+    this.open = true;
+    _initContextMenu(payload.contextMenuData);
   },
 
-  addChangeListener(callback) {
-    this.on('change', callback);
-  },
-
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  hide() {
+    this.open = false;
+    _initContextMenu({});
   },
 
   getState() {
@@ -35,25 +35,5 @@ const ContextMenuStore = merge({}, EventEmitter.prototype, {
 
 });
 
-ContextMenuStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.CONTEXT_MENU.OPEN:
-      ContextMenuStore.open = true;
-      _initContextMenu(payload.contextMenuData);
-      ContextMenuStore.emitChange();
-      break;
-
-    case AppConstants.CONTEXT_MENU.CLOSE:
-      ContextMenuStore.open = false;
-      _initContextMenu({});
-      ContextMenuStore.emitChange();
-      break;
-    default:
-    // no op
-  }
-});
 
 module.exports = ContextMenuStore;

@@ -1,8 +1,6 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
-var ExpenseDetailsStore = require('./expenseStore');
+var FluxStore = require('./fluxStore');
+var ExpenseStore = require('./expenseStore');
 
 var _expenses = false;
 
@@ -68,24 +66,85 @@ function _getMonthExpenses(month) {
   });
 }
 
-const ExpenseListStore = merge({}, EventEmitter.prototype, {
+const ExpenseListStore = new FluxStore({
 
   loading: false,
 
   error: false,
 
-  emitChange() {
-    this.emit('change');
+  waitFor: [ExpenseStore.dispatchToken],
+
+  listensTo: [
+    {
+      action: [
+        AppConstants.EXPENSES.LOAD_ALL,
+        AppConstants.EXPENSES.ADD,
+        AppConstants.EXPENSES.REMOVE,
+        AppConstants.EXPENSES.UPDATE
+      ],
+      handler: 'start'
+    },
+    {
+      action: [
+        AppConstants.EXPENSES.LOAD_ALL_FAIL,
+        AppConstants.EXPENSES.ADD_FAIL,
+        AppConstants.EXPENSES.REMOVE_FAIL,
+        AppConstants.EXPENSES.UPDATE_FAIL
+      ],
+      handler: 'fail'
+    },
+    {
+      action: AppConstants.EXPENSES.LOAD_ALL_SUCCESS,
+      handler: 'loadAll'
+    },
+    {
+      action: AppConstants.EXPENSES.ADD_SUCCESS,
+      handler: 'add'
+    },
+    {
+      action: AppConstants.EXPENSES.UPDATE_SUCCESS,
+      handler: 'update'
+    },
+    {
+      action: AppConstants.EXPENSES.REMOVE_SUCCESS,
+      handler: 'remove'
+    }
+  ],
+
+  // action handlers
+
+  start() {
+    this.loading = true;
+    this.error = false;
   },
 
-  addChangeListener(callback) {
-    this.on('change', function () {
-      callback();
-    });
+  fail(payload) {
+    this.loading = false;
+    this.error = payload.error;
   },
 
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  loadAll(payload) {
+    this.loading = false;
+    this.error = false;
+    _loadExpenses(payload.expensesData);
+  },
+
+  add(payload) {
+    this.loading = false;
+    this.error = false;
+    _addExpense(payload.expenseData);
+  },
+
+  update(payload) {
+    this.loading = false;
+    this.error = false;
+    _updateExpense(payload.expenseData);
+  },
+
+  remove(payload) {
+    this.loading = false;
+    this.error = false;
+    _removeExpense(payload.expenseId);
   },
 
   getState(month) {
@@ -94,76 +153,6 @@ const ExpenseListStore = merge({}, EventEmitter.prototype, {
       loading: this.loading,
       error: this.error
     }
-  }
-
-});
-
-ExpenseListStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-  AppDispatcher.waitFor([ExpenseDetailsStore.dispatchToken]);
-
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.EXPENSES.LOAD_ALL:
-    case AppConstants.EXPENSES.ADD:
-    case AppConstants.EXPENSES.REMOVE:
-    case AppConstants.EXPENSES.UPDATE:
-      ExpenseListStore.loading = true;
-      ExpenseListStore.error = false;
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.LOAD_ALL_SUCCESS:
-      ExpenseListStore.loading = false;
-      // add/update it on the cache object
-      _loadExpenses(payload.expensesData);
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.LOAD_ALL_FAIL:
-      ExpenseListStore.loading = false;
-      ExpenseListStore.error = payload.error;
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.ADD_SUCCESS:
-      ExpenseListStore.loading = false;
-      _addExpense(payload.expenseData);
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.ADD_FAIL:
-      ExpenseListStore.loading = false;
-      ExpenseListStore.error = payload.error;
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.UPDATE_SUCCESS:
-      ExpenseListStore.loading = false;
-      _updateExpense(payload.expenseData);
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.UPDATE_FAIL:
-      ExpenseListStore.loading = false;
-      ExpenseListStore.error = payload.error;
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.REMOVE_SUCCESS:
-      ExpenseListStore.loading = false;
-      _removeExpense(payload.expenseId);
-      ExpenseListStore.emitChange('change');
-      break;
-
-    case AppConstants.EXPENSES.REMOVE_FAIL:
-      ExpenseListStore.loading = false;
-      ExpenseListStore.error = payload.error;
-      ExpenseListStore.emitChange('change');
-      break;
-
-    default:
-    // no op
   }
 });
 

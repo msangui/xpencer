@@ -1,10 +1,8 @@
 var React = require('react/addons');
-var ReactTransitionGroup = React.addons.CSSTransitionGroup;
 var StoreWatchMixin = require ('../../mixins/storeWatchMixin');
 var LayoutStore = require('../../stores/layoutStore');
 
 function setHeaderState() {
-  console.log('state', LayoutStore.getState().headerData)
   return LayoutStore.getState().headerData;
 }
 

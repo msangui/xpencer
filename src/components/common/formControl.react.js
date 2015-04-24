@@ -6,7 +6,7 @@ var FormInput = React.createClass({
   mixins: [PureRenderMixin],
 
   render() {
-    var formControlClass = 'form-control';
+    var formControlClass = 'form-control ' + this.props.className;
 
     var error;
     if (this.props.error) {

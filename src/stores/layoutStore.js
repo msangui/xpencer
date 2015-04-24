@@ -1,7 +1,5 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
+var FluxStore = require('./fluxStore');
 
 var _layoutData = {
   headerData: {
@@ -10,18 +8,14 @@ var _layoutData = {
 };
 
 
-const LayoutStore = merge({}, EventEmitter.prototype, {
+const LayoutStore = new FluxStore({
 
-  emitChange() {
-    this.emit('change');
-  },
+  listensTo: [
+    {action: AppConstants.LAYOUT.SET_HEADER, handler: 'setHeader'}
+  ],
 
-  addChangeListener(callback) {
-    this.on('change', callback);
-  },
-
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  setHeader(payload){
+    _layoutData.headerData = payload.headerData;
   },
 
   getState() {
@@ -30,19 +24,5 @@ const LayoutStore = merge({}, EventEmitter.prototype, {
 
 });
 
-LayoutStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.LAYOUT.SET_HEADER:
-      _layoutData.headerData = payload.headerData;
-      LayoutStore.emitChange();
-      break;
-
-    default:
-    // no op
-  }
-});
 
 module.exports = LayoutStore;

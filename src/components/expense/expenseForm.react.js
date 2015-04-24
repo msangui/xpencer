@@ -19,14 +19,9 @@ var TransitionActions = require('../../actions/transitionActions');
 var merge = require('lodash/object/merge');
 var moment = require('moment');
 
-var setFormState = function(transition) {
+var setFormState = function() {
   var expenseId = this.context.router.getCurrentParams().expenseId;
   var storeState = ExpenseStore.getState(expenseId);
-
-  if (transition) {
-    TransitionActions.go(transition);
-    return;
-  }
 
   return storeState;
 };
@@ -119,7 +114,7 @@ var ExpenseForm = React.createClass({
 
     if (expense._id) {
       createdAtInput = (
-        <FormControl error={validationErrors.name}>
+        <FormControl error={validationErrors.createdAt}>
           <FormInput
             label="Created at"
             value={moment(expense.createdAt).format('YYYY-MM-DD')}
@@ -159,7 +154,7 @@ var ExpenseForm = React.createClass({
                   onChange={this.onChange.bind(this, 'currency')} />
               </FormControl>
               {createdAtInput}
-              <FormControl error={validationErrors.category.name}>
+              <FormControl error={validationErrors.category.name} className="form-control-input-auto-complete">
                 <CategoryAutoComplete
                   label="Category"
                   value={expense.category.name}

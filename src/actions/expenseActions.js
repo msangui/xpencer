@@ -68,7 +68,14 @@ var ExpenseActions = {
       AppDispatcher.dispatch({
         action: AppConstants.EXPENSES.ADD_SUCCESS,
         payload: {
-          expenseData: expenseData
+          expenseData: expenseData,
+          transition: {
+            route: 'viewExpense',
+            params: {
+              expenseId: expenseData._id
+            },
+            replace: true
+          }
         }
       });
     }, function (error) {
@@ -93,7 +100,15 @@ var ExpenseActions = {
       AppDispatcher.dispatch({
         action: AppConstants.EXPENSES.UPDATE_SUCCESS,
         payload: {
-          expenseData: expenseData
+          expenseData: expenseData,
+          transition: {
+            route: 'viewExpense',
+            params: {
+              expenseId: expenseData._id
+            },
+            direction: 'back',
+            replace: true
+          }
         }
       });
     }, function (error) {
@@ -124,7 +139,13 @@ var ExpenseActions = {
       AppDispatcher.dispatch({
         action: AppConstants.EXPENSES.REMOVE_SUCCESS,
         payload: {
-          expenseId: expenseId
+          expenseId: expenseId,
+          transition: {
+            route: 'listExpenses',
+            params: {},
+            direction: 'back',
+            replace: true
+          }
         }
 
       });

@@ -1,58 +1,43 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
+var FluxReact = require('./fluxStore');
+
 
 var _notificationData = {};
-
 
 function _initNotification(notificationData) {
   _notificationData = notificationData;
 }
 
-const NotificationStore = merge({}, EventEmitter.prototype, {
+const NotificationStore = new FluxReact({
 
-  show: false,
+  open: false,
 
-  emitChange() {
-    this.emit('change');
+  listensTo: [
+    {
+      action: AppConstants.NOTIFICATIONS.SHOW,
+      handler: 'show'
+    },
+    {
+      action: AppConstants.NOTIFICATIONS.HIDE,
+      handler: 'hide'
+    }
+  ],
+
+  show(payload){
+    this.open = true;
+    _initNotification(payload.notificationData);
   },
 
-  addChangeListener(callback) {
-    this.on('change', callback);
-  },
-
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  hide(){
+    this.open = false;
+    _initNotification({});
   },
 
   getState() {
     return {
-      show: this.show,
+      open: this.open,
       notificationData: _notificationData
     }
-  }
-
-});
-
-NotificationStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.NOTIFICATIONS.SHOW:
-      NotificationStore.show = true;
-      _initNotification(payload.notificationData)
-      NotificationStore.emitChange();
-      break;
-
-    case AppConstants.NOTIFICATIONS.HIDE:
-      NotificationStore.show = false;
-      _initNotification({});
-      NotificationStore.emitChange();
-      break;
-    default:
-    // no op
   }
 });
 

@@ -1,29 +1,29 @@
-var merge = require('lodash/object/merge');
-var AppDispatcher = require('../dispatchers/appDispatcher');
 var AppConstants = require('../constants/appConstants');
-var EventEmitter = require('events').EventEmitter;
+var FluxStore = require('./fluxStore');
 
 var _modalData = {};
-
 
 function _initModal(modalData) {
   _modalData = modalData;
 }
 
-const ModalStore = merge({}, EventEmitter.prototype, {
+const ModalStore = new FluxStore({
 
   open: false,
 
-  emitChange() {
-    this.emit('change');
+  listensTo: [
+    {action: AppConstants.MODAL.OPEN, handler: 'show'},
+    {action: AppConstants.MODAL.CLOSE, handler: 'hide'}
+  ],
+
+  show(){
+    this.open = true;
+    _initModal(payload.modalData);
   },
 
-  addChangeListener(callback) {
-    this.on('change', callback);
-  },
-
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  hide() {
+    this.open = false;
+    _initModal({});
   },
 
   getState() {
@@ -33,27 +33,6 @@ const ModalStore = merge({}, EventEmitter.prototype, {
     }
   }
 
-});
-
-ModalStore.dispatchToken = AppDispatcher.register(function(actionPayload) {
-
-  var {action, payload} = actionPayload;
-
-  switch(action) {
-    case AppConstants.MODAL.OPEN:
-      ModalStore.open = true;
-      _initModal(payload.modalData);
-      ModalStore.emitChange();
-      break;
-
-    case AppConstants.MODAL.CLOSE:
-      ModalStore.open = false;
-      _initModal({});
-      ModalStore.emitChange();
-      break;
-    default:
-    // no op
-  }
 });
 
 module.exports = ModalStore;
