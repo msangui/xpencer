@@ -9,7 +9,10 @@ const CategoryFilterListStore = new FluxStore({
   listensTo: [
     {action: AppConstants.CATEGORIES.FILTER, handler: 'start'},
     {action: AppConstants.CATEGORIES.FILTER_SUCCESS, handler: 'filterSuccess'},
-    {action: AppConstants.CATEGORIES.FILTER_FAIL, handler: 'filterFail'}
+    {action: [
+      AppConstants.CATEGORIES.FILTER_FAIL,
+      AppConstants.CATEGORIES.CLEAN_SUGGESTIONS
+    ], handler: 'clean'}
   ],
 
   start(){
@@ -20,7 +23,7 @@ const CategoryFilterListStore = new FluxStore({
     this.categories = payload.categories;
   },
 
-  filterFail(){
+  clean(){
     this.categories = [];
   },
 

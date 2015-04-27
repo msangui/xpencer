@@ -5,8 +5,8 @@ var FormInput = require('./formInput.react');
 var FormInputAutoComplete = React.createClass({
 
 
-  onSelect(suggestion) {
-    this.props.onSelect(suggestion)
+  onSelect(suggestion, event) {
+    this.props.onSelect(suggestion, event)
   },
 
   render() {

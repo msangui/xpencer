@@ -38,16 +38,18 @@ var CategoryAutoComplete = React.createClass({
     this.props.onChange(value);
   },
 
-  onSelect(suggestion) {
+  onFocus(event) {
+    var value = event.target.value;
+    event.stopPropagation();
+    this.onChange(value);
+  },
+
+  onSelect(suggestion, event) {
+    event.stopPropagation();
     this.setState({
       suggestions: []
     });
     this.props.onChange(suggestion);
-  },
-
-
-  onBlur() {
-    this.setState({suggestions: []});
   },
 
   render() {
@@ -55,7 +57,7 @@ var CategoryAutoComplete = React.createClass({
     return (
       <FormInputAutoComplete
         {...other}
-        onBlur={this.onBlur}
+        onFocus={this.onFocus}
         suggestions={this.state.suggestions}
         onChange={this.onChange}
         onSelect={this.onSelect}/>

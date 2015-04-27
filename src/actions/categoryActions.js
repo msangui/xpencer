@@ -57,14 +57,16 @@ const CategoryActions = {
     });
   },
 
+  cleanSuggestions() {
+    AppDispatcher.dispatch({
+      action: AppConstants.CATEGORIES.CLEAN_SUGGESTIONS
+    });
+  },
+
   loadAll() {
 
-    // API call started
-    AppDispatcher.dispatch({
-      action: AppConstants.CATEGORIES.LOAD_ALL
-    });
-
-    CategoryAPI.getAllCategories().then(function(results) {
+    // API call star
+   CategoryAPI.getAllCategories().then(function(results) {
       // API call succeeded
       AppDispatcher.dispatch({
         action: AppConstants.CATEGORIES.LOAD_ALL_SUCCESS,

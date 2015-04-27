@@ -18,34 +18,33 @@ function setExpenseListState() {
 var ExpenseList = React.createClass({
   mixins: [new StoreWatchMixin({
     store: ExpenseListStore,
-    setState: setExpenseListState
-  }), PureRenderMixin],
+    setState: setExpenseListState,
+    componentWillMount() {
+      var storeState = ExpenseListStore.getState();
 
-  componentWillMount() {
-    var storeState = ExpenseListStore.getState();
+      if (!storeState.expenses && !storeState.loading) {
+        // no expense loaded yet!
+        // let the component mount first
+        ExpenseActions.loadAll(new Date().getMonth() + 1);
+      }
 
-    if (!storeState.expenses && !storeState.loading) {
-      // no expense loaded yet!
-      // let the component mount first
-      ExpenseActions.loadAll(new Date().getMonth() + 1);
-    }
-
-    // set layout
-    LayoutActions.setHeader({
-      title: 'Expenses',
-      navigation: {
-        right: {
-          icon: 'icon-plus',
-          action: function () {
-            TransitionActions.go({
-              direction: 'forward',
-              route: 'addExpense'
-            });
+      // set layout
+      LayoutActions.setHeader({
+        title: 'Expenses',
+        navigation: {
+          right: {
+            icon: 'icon-plus',
+            action: function () {
+              TransitionActions.go({
+                direction: 'forward',
+                route: 'addExpense'
+              });
+            }
           }
         }
-      }
-    });
-  },
+      });
+    }
+  }), PureRenderMixin],
 
   render() {
     var expenses;

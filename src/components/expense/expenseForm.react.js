@@ -3,6 +3,7 @@ var React = require('react/addons');
 var StoreWatchMixin = require('../../mixins/storeWatchMixin');
 var ExpenseActions = require('../../actions/expenseActions');
 var LayoutActions = require('../../actions/layoutActions');
+var CategoryActions = require('../../actions/categoryActions');
 
 var ExpenseStore = require('../../stores/expenseStore');
 
@@ -98,6 +99,10 @@ var ExpenseForm = React.createClass({
     this.setState(state);
   },
 
+  onViewClick() {
+    CategoryActions.cleanSuggestions();
+  },
+
   onSubmit() {
     ExpenseActions.save(this.state.expense);
   },
@@ -125,7 +130,7 @@ var ExpenseForm = React.createClass({
     }
 
     return (
-      <div className="content-container">
+      <div className="content-container" onClick={this.onViewClick}>
         <div className="expense-form box">
           <Loading show={this.state.loading}/>
           <CameraToggle src={expense.imageSrc}/>

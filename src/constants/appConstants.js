@@ -36,7 +36,8 @@ const appConstants = {
     REMOVE_FAIL: 'category::remove::fail',
     UPDATE: 'category::update',
     UPDATE_SUCCESS: 'category::update::success',
-    UPDATE_FAIL: 'category::update::fail'
+    UPDATE_FAIL: 'category::update::fail',
+    CLEAN_SUGGESTIONS: 'category::cleanSuggestion'
   },
   LAYOUT: {
     SET_HEADER: 'layout::setHeader'
@@ -58,8 +59,8 @@ const appConstants = {
     WENT: 'transitions::went'
   },
   GOOGLE: {
-    CLIENT_ID: '',
-    CLIENT_SECRET: '',
+    CLIENT_ID: '440092196371-ec85f8eg91rhrd0cfjfuvfkp0qpmcj6k.apps.googleusercontent.com',
+    CLIENT_SECRET: '7kcS1gsgWZ9xHHa4kbnhMu2r',
     LOGIN_URI: 'https://accounts.google.com/o/oauth2/auth'
   },
   LOGIN: {

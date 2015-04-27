@@ -13,15 +13,15 @@ var FormInput = React.createClass({
     this.props.onChange(value);
   },
 
-  onBlur() {
+  onBlur(event) {
     if (this.props.onBlur) {
-      this.props.onBlur();
+      this.props.onBlur(event);
     }
   },
 
-  onFocus() {
+  onFocus(event) {
     if (this.props.onFocus) {
-      this.props.onFocus();
+      this.props.onFocus(event);
     }
   },
 
